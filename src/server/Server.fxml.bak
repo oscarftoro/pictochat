@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="139.0" prefWidth="180.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml" fx:controller="server.ServerController">
+  <children>
+    <Label layoutX="43.0" layoutY="14.0" text="Server">
+      <font>
+        <Font name="Free Monospaced Bold" size="26.0" />
+      </font>
+    </Label>
+    <Button id="connect_bttn" fx:id="open_port_bttn" layoutX="46.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleOpenPortButton" text="Open Port" />
+    <HBox id="HBox" alignment="CENTER" layoutX="51.0" layoutY="51.0" spacing="5.0">
+      <children>
+        <Label text="Port" />
+        <TextField fx:id="port_txt_field" prefWidth="46.0" promptText="7890" />
+      </children>
+    </HBox>
+    <Label fx:id="message_lbl" alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="116.0" opacity="0.5" text="" textAlignment="CENTER" />
+  </children>
+  <stylesheets>
+    <URL value="@server.css" />
+  </stylesheets>
+</AnchorPane>

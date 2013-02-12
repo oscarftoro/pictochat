@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="168.0" prefWidth="320.0" xmlns:fx="http://javafx.com/fxml" fx:controller="datw12chat.SampleController">
+  <children>
+    <Button id="button" fx:id="open_server_bttn" layoutX="16.0" layoutY="62.0" onAction="#handleServerButtonAction" text="Open Server" />
+    <Label layoutX="16.0" layoutY="14.0" text="Wellcome to DATW12 Chat!">
+      <font>
+        <Font name="Free Monospaced Bold" size="20.0" />
+      </font>
+      <stylesheets>
+        <URL value="@sample.css" />
+      </stylesheets>
+    </Label>
+    <Button fx:id="open_client_bttn" layoutX="205.0" layoutY="62.0" mnemonicParsing="false" onAction="#handleClientButtonAction" text="Open Client" />
+    <HBox id="HBox" alignment="CENTER" layoutX="52.0" layoutY="107.0" spacing="5.0">
+      <children>
+        <Label text="your IP Address is">
+          <font>
+            <Font name="Free Monospaced Bold" size="13.0" fx:id="x1" />
+          </font>
+        </Label>
+        <Label id="ip_address_txt_field" fx:id="c" font="$x1" text="127.0.0.1" />
+      </children>
+    </HBox>
+  </children>
+  <stylesheets>
+    <URL value="@sample.css" />
+  </stylesheets>
+</AnchorPane>
