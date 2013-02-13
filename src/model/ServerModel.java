@@ -5,52 +5,56 @@
 package model;
 
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 
 /**
  *
  * @author oscar felipe toro DATW12 <oscar@groovenino.com>
  */
-public class ServerModel {
+public class ServerModel extends TCPModel {
     
-    int port = 6780;
     ServerSocket serverSocket;
-    Socket socket;
-    /**
-     * Open a ServerSocket
-     * @param port 
-     */
-    public void openPort(int port){
-        try{
-            //create a Server Port
-            serverSocket = new ServerSocket(port);
-            //waiting for anyone to connect
-            socket = serverSocket.accept();
-            
-        }catch (Exception ex){
-            
-            Logger.getLogger(ServerModel.class.getName()).log(Level.SEVERE, null, ex);
-            
-        }
-        
+    
+    public ServerModel(){
         
     }
-    public void closePort(){
-        try{
-            socket.close();
-        }catch (Exception ex){
-            Logger.getLogger(ServerModel.class.getName()).log(Level.SEVERE, null, ex);
+   
+    public Task<Boolean> doOpenPort(final int port){
+        return new Task<Boolean>(){
+            @Override
+            protected Boolean call() {
+                 try{
+                        //create a Server Port
+                        serverSocket = new ServerSocket(port);
+                        //waiting for anyone to connect
+                        //socket from TCPModel abstract class
+                        socket = serverSocket.accept();
+                       
+                        //System.out.println("In Server: Is this a JFX Thread?" + Platform.isFxApplicationThread());
+                         return true;
+                 }catch (Exception ex){
             
-        }
+                    Logger.getLogger(ServerModel.class.getName()).log(Level.SEVERE, null, ex);
+                    return false;
+                }
+            }
+        };
     }
-    /*
-     * define a port
-     */
-    public void setPort(int port) {
+  
+
+    public void setSocketData(int port) {
         this.port = port;
     }
+
+    
+
+    
+    
+    
+    
  
     
 }
