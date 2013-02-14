@@ -1,6 +1,8 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Oscar Toro DATW12
+ * Ready to implement Service and Tasks
+ * Branch ClientConnection
+ * ClientConnectionWorking
  */
 package datw12chat;
 

@@ -1,7 +1,7 @@
 /*
  * 
  * Oscar Toro DATW12
- * Implementing with runLater
+ * 
  */
 package client;
 
