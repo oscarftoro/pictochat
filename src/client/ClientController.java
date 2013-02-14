@@ -1,15 +1,14 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * 
+ * Oscar Toro DATW12
+ * Implementing with runLater
  */
 package client;
 
 import model.ClientModel;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,6 +34,7 @@ public class ClientController implements Initializable {
     Button connect_client_bttn;
     @FXML //to show messages to the user
     Label message_client_lbl;
+
     @FXML
     TextArea text_area_client;
     @FXML
@@ -57,6 +57,10 @@ public class ClientController implements Initializable {
         int port = Integer.parseInt(port_txt_field.getText());
         //we instantiate new clients every time the button is pressed
         clientModel = new ClientModel();
+        //run a background thread other than JFX Application Thread
+   
+        
+        
         
         //generate a task to invoke it on a background thread
         //otherwise we happend to use the JavaFX Application Thread
@@ -91,7 +95,7 @@ public class ClientController implements Initializable {
         });
             
         new Thread(connect).start();
-        //connect.getMessage() didn't worked;
+        
         
     }
     
@@ -99,20 +103,30 @@ public class ClientController implements Initializable {
     private void handleTextFieldClient(ActionEvent event){
         sendMessage();
     }
-    
+    //
+    //print message direct from label to main Text Area
     private void sendMessage(){
        //put the message on the main Text Field
        String text = text_field_client.getText();
        text_area_client.appendText("me: "+ text + "\n");
        //clear text field after send message
        text_field_client.clear();
+       //TO DO HERE
+       //clientModel.sendMessage(text);
+       
+       //this is a task...it should be send to a service in order to send messages in one thread
+       //rather than create several threads per message =/
+       clientModel.sendMessage(text);
+    }
+    
+    
+    private void receivedMessage(String receivedMessage){
+        text_area_client.appendText(receivedMessage + "\n");
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        
     }
-        
-        
-    
+       
       
 }

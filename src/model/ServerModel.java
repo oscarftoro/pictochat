@@ -4,10 +4,10 @@
  */
 package model;
 
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 /**
@@ -44,12 +44,25 @@ public class ServerModel extends TCPModel {
         };
     }
   
-
+    
     public void setSocketData(int port) {
         this.port = port;
     }
-
-    
+    //TODO I
+    //add clients to the server
+    //good candidate to be a service
+    public void run(){
+        serverSocket = null;
+        try {
+            //socket object? or just a new socket??...21:37
+            while(true){
+            socket = serverSocket.accept();
+            ConnectionsManager.getInstance().connectNew(new ConnectionModel(socket));
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ServerModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     
     
