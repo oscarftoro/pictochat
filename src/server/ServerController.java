@@ -40,7 +40,6 @@ public class ServerController implements Initializable {
         //get text from text field and send it to the server 
         port = Integer.parseInt(port_txt_field.getText());
         
-        
          //Initialize the model just one time
         if(serverModel== null){
             message_lbl.setText("Waiting for connection...");

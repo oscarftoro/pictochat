@@ -8,6 +8,8 @@ package client;
 import model.ClientModel;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -40,6 +42,7 @@ public class ClientController implements Initializable {
     TextField text_field_client;
     
     ClientModel clientModel;
+    StringProperty messageFromClient;
     
     private EventHandler<WorkerStateEvent> EventHandler;
     
@@ -56,13 +59,19 @@ public class ClientController implements Initializable {
         int port = Integer.parseInt(port_txt_field.getText());
         
         clientModel.setUrlAndPort(url, port);
+        //BINDING
         message_client_lbl.textProperty().bind(
             clientModel.messageProperty());
+        // message from model to view
+//        messageFromClient.bind(clientModel.valueProperty());
         clientModel.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 
             @Override
             public void handle(WorkerStateEvent t) {
-                System.out.println("Succees again");
+                
+                String s = (String) t.getSource().getValue();
+                appendmessageReceived(s);
+                clientModel.restart();
             }
         });
         clientModel.start();
@@ -80,7 +89,7 @@ public class ClientController implements Initializable {
      * any time we press enter in the GUI Text Field
      */
     private void sendMessage(){
-       //put the message on the main Text Field
+       //get the message from the main Text Field
        String text = text_field_client.getText();
 //       text_area_client.appendText("me: "+ text + "\n");
        //clear text field after send message
@@ -89,20 +98,22 @@ public class ClientController implements Initializable {
        //this is a task...it should be send to a service in order to send messages in one thread
        //rather than create several threads per message =/
        clientModel.sendMessage(text);
-       AppendmessageReceived();
+       
     }
     
     /*
-     * Append a Message to the Main Text Field
-     */
-            
-    private void AppendmessageReceived(){
-        
-        text_area_client.appendText(clientModel.getMessageIn() + "\n");
+     * Append a Message from the client thread to the Main Text Field
+     * 
+     */       
+    private void appendmessageReceived(String messageFromThread){
+        text_area_client.appendText(messageFromThread+ "\n");
     }
+ 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
+
+            
+//            initialize the ClientModel
             clientModel = new ClientModel();
         
     }

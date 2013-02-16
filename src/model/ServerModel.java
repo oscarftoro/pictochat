@@ -30,7 +30,7 @@ public class ServerModel extends TCPModel {
                         //create a Server Port
                         serverSocket = new ServerSocket(port);
                         //send a text actualisation of the actual process
-                        updateMessage("Waiting for conecting..");
+                        updateMessage("Waiting for connecting..");
                         
                         while(true){
                         //waiting for anyone to connect
