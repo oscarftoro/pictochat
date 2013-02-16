@@ -65,7 +65,8 @@ public class ClientModel extends Service<Void>{
                          
                             while (booly) {
                                 messageIn = dataInputStream.readUTF();
-                              
+ //HOW TO SEND THE MESSAGES TO THE VIEW???!!!
+                                
                               if(messageIn != null){
                                 System.out.println("we received this message: "+messageIn);
                               }
