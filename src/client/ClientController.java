@@ -5,14 +5,9 @@
  */
 package client;
 
-import java.io.IOException;
 import model.ClientModel;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -87,22 +82,23 @@ public class ClientController implements Initializable {
     private void sendMessage(){
        //put the message on the main Text Field
        String text = text_field_client.getText();
-       text_area_client.appendText("me: "+ text + "\n");
+//       text_area_client.appendText("me: "+ text + "\n");
        //clear text field after send message
        text_field_client.clear();
        
        //this is a task...it should be send to a service in order to send messages in one thread
        //rather than create several threads per message =/
        clientModel.sendMessage(text);
+       AppendmessageReceived();
     }
     
     /*
      * Append a Message to the Main Text Field
      */
             
-    private void AppendmessageReceived(String messageFromServer){
+    private void AppendmessageReceived(){
         
-        text_area_client.appendText(messageFromServer + "\n");
+        text_area_client.appendText(clientModel.getMessageIn() + "\n");
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {

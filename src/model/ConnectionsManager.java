@@ -34,7 +34,8 @@ public class ConnectionsManager {
     public void sendMessageToAll(String message){
         for(ConnectionModel cm : connections){
             //send message to connected clients
-            System.out.println("I in connectionsManager: "+ message);
+//            System.out.println("I in connectionsManager: "+ message);
+            
             cm.sendMessage(message);
         }
     }

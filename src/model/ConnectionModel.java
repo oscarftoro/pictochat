@@ -8,8 +8,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
+
 
 /**
  *
@@ -27,7 +26,7 @@ public class ConnectionModel extends Thread{
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream((socket.getOutputStream()));
             
-            //UTROLIG VIGTIGT er at starter trådet ellers sker der ikke noget skid
+            //UTROLIG VIGTIGT er at starte trådet ellers sker der ikke noget skid
             start();
         } catch (IOException ex) {
             Logger.getLogger(ConnectionModel.class.getName()).log(Level.SEVERE, null, ex);
@@ -35,8 +34,25 @@ public class ConnectionModel extends Thread{
        
     }
     /*
+     * THIS IS NOT WRITTING ANYTHING
      * send messages to all the connected clients 
      */
+    
+   
+            @Override
+    public void run() {
+        while (true){
+            try {
+                String stringDataInputStream= dataInputStream.readUTF();
+                //send message to cliente
+                ConnectionsManager.getInstance().sendMessageToAll(stringDataInputStream);
+
+                } catch (IOException ex) {
+                    Logger.getLogger(ConnectionModel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+        }
+    }
     public void sendMessage(String message){
         try {
             dataOutputStream.writeUTF(message);
@@ -44,35 +60,5 @@ public class ConnectionModel extends Thread{
             Logger.getLogger(ConnectionModel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-   
-            @Override
-            public void run() {
-                while (true){
-                    try {
-                        String stringDataInputStream= dataInputStream.readUTF();
-                        
-                        //send message to cliente
-                        ConnectionsManager.getInstance().sendMessageToAll(stringDataInputStream);
-                        
-                        
-                    } catch (IOException ex) {
-                        Logger.getLogger(ConnectionModel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-   
-                }
-    }
-
-    
-    //receive message from client for ever
-    private void receiveMessageFromClient() {
-        while (true){
-            try {
-                String stringDataInputStram= dataInputStream.readUTF();
-                //send message to client(s)
-                ConnectionsManager.getInstance().sendMessageToAll(stringDataInputStram);
-            } catch (IOException ex) {
-                Logger.getLogger(ConnectionModel.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
+            
 }

@@ -24,8 +24,12 @@ import javafx.concurrent.Task;
 public class ClientModel extends Service<Void>{
     Socket socket;
     int port = 6780;
-    Boolean booly = false;
+    Boolean booly = true;
     String messageIn="!";
+
+    public String getMessageIn() {
+        return messageIn;
+    }
     private String url ="127.0.0.1";
     
     /*
@@ -38,7 +42,7 @@ public class ClientModel extends Service<Void>{
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             //send the message as a String of type UTF-8 to the socket
             dataOutputStream.writeUTF(message);
-           booly=true;
+
             
         } catch (IOException ex) {
             Logger.getLogger(ClientModel.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,14 +71,14 @@ public class ClientModel extends Service<Void>{
                                 messageIn = dataInputStream.readUTF();
  //HOW TO SEND THE MESSAGES TO THE VIEW???!!!
                                 
-                              if(messageIn != null){
-                                System.out.println("we received this message: "+messageIn);
+                              if(messageIn!= null){
+                                System.out.println(messageIn);
                               }
                               
                                 //send message ClientController.receivedMessage(messageIn);
 
                                 
-                              if(messageIn.equals(".quit")){booly=false;}
+//                              if(messageIn.equals(".quit")){booly=false;}
                             }
                     } catch (UnknownHostException ex) {
                         updateMessage("error desconocido");
