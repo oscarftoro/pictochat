@@ -20,49 +20,56 @@ public class ServerModel extends TCPModel {
     
     public ServerModel(){
         
-    }
-   
+    } 
     public Task<Boolean> doOpenPort(final int port){
         return new Task<Boolean>(){
             @Override
             protected Boolean call() {
+                int send = 0;
                  try{
                         //create a Server Port
                         serverSocket = new ServerSocket(port);
+                        //send a text actualisation of the actual process
+                        updateMessage("Waiting for conecting..");
+                        
+                        while(true){
                         //waiting for anyone to connect
                         //socket from TCPModel abstract class
-                        socket = serverSocket.accept();
-                       
-                        //System.out.println("In Server: Is this a JFX Thread?" + Platform.isFxApplicationThread());
-                         return true;
+                        socket = serverSocket.accept(); 
+                        if(send==0){
+                        updateMessage("Connected..");
+                        send =1;}
+                        //connect new clients
+                        
+                        ConnectionsManager.getInstance().connectNew(new ConnectionModel(socket));
+                        
+                        updateMessage("new client connected");
+                                
+                        //update message in Gui the first time
+              
+                        }
+                        
                  }catch (Exception ex){
-            
-                    Logger.getLogger(ServerModel.class.getName()).log(Level.SEVERE, null, ex);
+                    try {
+                        Logger.getLogger(ServerModel.class.getName()).log(Level.SEVERE, null, ex);
+                        socket.close();
+                        return false;
+                    } catch (IOException ex1) {
+                        updateMessage("I/O Error");
+                        Logger.getLogger(ServerModel.class.getName()).log(Level.SEVERE, null, ex1);
                     return false;
+                    }
                 }
             }
         };
     }
   
-    
+
     public void setSocketData(int port) {
         this.port = port;
     }
-    //TODO I
-    //add clients to the server
-    //good candidate to be a service
-    public void run(){
-        serverSocket = null;
-        try {
-            //socket object? or just a new socket??...21:37
-            while(true){
-            socket = serverSocket.accept();
-            ConnectionsManager.getInstance().connectNew(new ConnectionModel(socket));
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(ServerModel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+
+    
 
     
     

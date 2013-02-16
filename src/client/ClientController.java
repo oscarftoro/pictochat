@@ -5,9 +5,13 @@
  */
 package client;
 
+import java.io.IOException;
 import model.ClientModel;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
@@ -52,80 +56,59 @@ public class ClientController implements Initializable {
         
         //Same with port...
         String url = url_txt_field.getText();
-        
+         
         //get the text from text field (Gui)
         int port = Integer.parseInt(port_txt_field.getText());
-        //we instantiate new clients every time the button is pressed
-        clientModel = new ClientModel();
-        //run a background thread other than JFX Application Thread
-   
         
-        
-        
-        //generate a task to invoke it on a background thread
-        //otherwise we happend to use the JavaFX Application Thread
-        //and that screw up all the app
-        
-        final Task<Boolean> connect = clientModel.doOpenPort(url,port);
-        connect.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+        clientModel.setUrlAndPort(url, port);
+        message_client_lbl.textProperty().bind(
+            clientModel.messageProperty());
+        clientModel.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 
             @Override
             public void handle(WorkerStateEvent t) {
-                if(connect.getValue()){
-                    System.out.println("Success");
-                    message_client_lbl.setText("Connected");
-                    
-                   
-                }else{
-                    
-                    System.out.println("err on connect");
-                    message_client_lbl.setText("Connection Failed");
-                }
+                System.out.println("Succees again");
             }
         });
-        connect.setOnFailed(new EventHandler<WorkerStateEvent>() {
-
-            @Override
-            public void handle(WorkerStateEvent t) {
-                
-                System.out.println("Connecting Err");
-            }
-            
-            
-        });
-            
-        new Thread(connect).start();
-        
-        
+        clientModel.start();
     }
     
     @FXML
     private void handleTextFieldClient(ActionEvent event){
         sendMessage();
     }
-    //
-    //print message direct from label to main Text Area
+    
+    /*
+     * Send Messages to the server.
+     * we have to have a method because
+     * we want to call it by our selves
+     * any time we press enter in the GUI Text Field
+     */
     private void sendMessage(){
        //put the message on the main Text Field
        String text = text_field_client.getText();
        text_area_client.appendText("me: "+ text + "\n");
        //clear text field after send message
        text_field_client.clear();
-       //TO DO HERE
-       //clientModel.sendMessage(text);
        
        //this is a task...it should be send to a service in order to send messages in one thread
        //rather than create several threads per message =/
        clientModel.sendMessage(text);
     }
     
-    
-    private void receivedMessage(String receivedMessage){
-        text_area_client.appendText(receivedMessage + "\n");
+    /*
+     * Append a Message to the Main Text Field
+     */
+            
+    private void AppendmessageReceived(String messageFromServer){
+        
+        text_area_client.appendText(messageFromServer + "\n");
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        
+            clientModel = new ClientModel();
+        
     }
        
       

@@ -31,7 +31,7 @@ public class ServerController implements Initializable {
     @FXML TextField port_txt_field;
     @FXML Button open_port_bttn;
     @FXML Label message_lbl;
-    ServerModel serverModel;
+    ServerModel serverModel= null;
     
     int port;
     
@@ -40,19 +40,29 @@ public class ServerController implements Initializable {
         //get text from text field and send it to the server 
         port = Integer.parseInt(port_txt_field.getText());
         
-        message_lbl.setText("Waiting for connection...");
-        final Task<Boolean> connect = serverModel.doOpenPort(port);
         
+         //Initialize the model just one time
+        if(serverModel== null){
+            message_lbl.setText("Waiting for connection...");
+            serverModel = new ServerModel();
+            final Task<Boolean> connect = serverModel.doOpenPort(port);
+            //actualize the message according to the thread state 
+            message_lbl.textProperty().bind(
+                    connect.messageProperty());
+            ////
             connect.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 
                 @Override
                 public void handle(WorkerStateEvent t) {
                     if(connect.getValue()){
-                        message_lbl.setText("Suceesfully connected");
+                        
+                      //  message_lbl.setText("Suceesfully connected");
                         System.out.println("succesfully connected");
                         // System.out.println(Platform.isFxApplicationThread()+"is JavaFX thread");
                     }else{
-                        message_lbl.setText("Connection Error");
+                       
+                        
+                      //  message_lbl.setText("Connection Error");
                         System.out.println("err on connect");
                     }
                 }
@@ -63,18 +73,22 @@ public class ServerController implements Initializable {
                 public void handle(WorkerStateEvent t) {
                     System.out.println("Connection err");
                     message_lbl.setText("Connection Error");
+                    //if wh get an error at start set server model to null
+                    serverModel = null;
                 }
             });
             new Thread(connect).start();
-       
         }
+        else{
+        message_lbl.setText("server running...");
+        }
+    }
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-         //Initialize the model
-        serverModel = new ServerModel();
+        
     }
      
 }
