@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="168.0" prefWidth="320.0" xmlns:fx="http://javafx.com/fxml" fx:controller="datw12chat.SampleController">
+<AnchorPane id="AnchorPane" prefHeight="168.0" prefWidth="320.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml" fx:controller="datw12chat.SampleController">
   <children>
     <Button id="button" fx:id="open_server_bttn" layoutX="16.0" layoutY="62.0" onAction="#handleServerButtonAction" text="Open Server" />
     <Label layoutX="16.0" layoutY="14.0" text="Wellcome to DATW12 Chat!">

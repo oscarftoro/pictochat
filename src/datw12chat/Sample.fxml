@@ -22,12 +22,12 @@
     <Button fx:id="open_client_bttn" layoutX="205.0" layoutY="62.0" mnemonicParsing="false" onAction="#handleClientButtonAction" text="Open Client" />
     <HBox id="HBox" alignment="CENTER" layoutX="52.0" layoutY="107.0" spacing="5.0">
       <children>
-        <Label text="your IP Address is">
+        <Label prefWidth="145.9998779296875" text="your IP Address is">
           <font>
             <Font name="Free Monospaced Bold" size="13.0" fx:id="x1" />
           </font>
         </Label>
-        <Label id="ip_address_txt_field" fx:id="c" font="$x1" text="127.0.0.1" />
+        <Label fx:id="ip_address_txt_field" font="$x1" text="" />
       </children>
     </HBox>
   </children>

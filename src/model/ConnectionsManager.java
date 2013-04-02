@@ -22,7 +22,7 @@ public class ConnectionsManager {
     private static ConnectionsManager singleton = new ConnectionsManager();
     
    //return one instance of this class by Singleton
-    public static ConnectionsManager getInstance(){
+    public static  ConnectionsManager getInstance(){
         return singleton;
     }
 
@@ -31,10 +31,10 @@ public class ConnectionsManager {
      * send message to all the conected clients
      * @param message as a String
      */
-    public void sendMessageToAll(String message){
+    public synchronized void sendMessageToAll (String message){
         for(ConnectionModel cm : connections){
             //send message to connected clients
-//            System.out.println("I in connectionsManager: "+ message);
+
             
             cm.sendMessage(message);
         }
@@ -42,7 +42,7 @@ public class ConnectionsManager {
     /*
      * add new socket to the array list when a new client arrives
      */    
-    public void connectNew(ConnectionModel cm){
+    public synchronized void connectNew(ConnectionModel cm){
         connections.add(cm);
     }
 

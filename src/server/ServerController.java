@@ -6,7 +6,6 @@ package server;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
@@ -37,6 +36,7 @@ public class ServerController implements Initializable {
     
     @FXML
     private void handleOpenPortButton(ActionEvent event){
+        
         //get text from text field and send it to the server 
         port = Integer.parseInt(port_txt_field.getText());
         
@@ -76,7 +76,7 @@ public class ServerController implements Initializable {
                     serverModel = null;
                 }
             });
-            new Thread(connect).start();
+            new Thread(connect,"Server_connect_Thread").start();
         }
         else{
         message_lbl.setText("server running...");

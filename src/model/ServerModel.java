@@ -4,8 +4,13 @@
  */
 package model;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.concurrent.Task;
@@ -13,10 +18,15 @@ import javafx.concurrent.Task;
 /**
  *
  * @author oscar felipe toro DATW12 <oscar@groovenino.com>
+ * what if we made this class a process rather than a task?
+ * it is carrying several connections somehow or other =/
  */
-public class ServerModel extends TCPModel {
-    
+public class ServerModel  {
+    Socket socket;
+    int port;
     ServerSocket serverSocket;
+    private String IpInternet;
+    private String networkIp;
     
     public ServerModel(){
         
@@ -33,14 +43,15 @@ public class ServerModel extends TCPModel {
                         updateMessage("Waiting for connecting..");
                         
                         while(true){
+                          
                         //waiting for anyone to connect
                         //socket from TCPModel abstract class
                         socket = serverSocket.accept(); 
-                        if(send==0){
+                      //  if(send==0){
                         updateMessage("Connected..");
-                        send =1;}
+                      //  send =1;}
                         //connect new clients
-                        
+                           
                         ConnectionsManager.getInstance().connectNew(new ConnectionModel(socket));
                         
                         updateMessage("new client connected");
@@ -52,6 +63,7 @@ public class ServerModel extends TCPModel {
                  }catch (Exception ex){
                     try {
                         Logger.getLogger(ServerModel.class.getName()).log(Level.SEVERE, null, ex);
+                        updateMessage("Disconnected");
                         socket.close();
                         return false;
                     } catch (IOException ex1) {
@@ -69,7 +81,25 @@ public class ServerModel extends TCPModel {
         this.port = port;
     }
 
+    public String getInternetIP()throws MalformedURLException, IOException{
+        
+        URL whatismyip = new URL("http://checkip.amazonaws.com");
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                        whatismyip.openStream()));
+
+        IpInternet = in.readLine(); //you get the IP as a String
+        
+        in.close();
+ 
+        return IpInternet;
+        
+    }
     
+    public String getNetworkIP(){
+        
+        
+        return networkIp;
+    }
 
     
     

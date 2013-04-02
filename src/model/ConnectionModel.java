@@ -22,22 +22,27 @@ public class ConnectionModel extends Thread{
     
     public ConnectionModel(Socket socket){
         this.socket = socket;
-        try {
-            dataInputStream = new DataInputStream(socket.getInputStream());
-            dataOutputStream = new DataOutputStream((socket.getOutputStream()));
-            
-            //UTROLIG VIGTIGT er at starte trådet ellers sker der ikke noget skid
-            start();
-        } catch (IOException ex) {
-            Logger.getLogger(ConnectionModel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        dataStream();
        
     }
     /*
      * THIS IS NOT WRITTING ANYTHING
      * send messages to all the connected clients 
      */
-    
+    /**
+     *
+     */
+    public synchronized void dataStream (){
+        try {
+            dataInputStream = new DataInputStream(socket.getInputStream());
+            dataOutputStream = new DataOutputStream((socket.getOutputStream()));
+            this.setName("Connection_Model_Thread");
+            //UTROLIG VIGTIGT!  at starte trådet ellers sker der ikke noget skid
+            start();
+        } catch (IOException ex) {
+            Logger.getLogger(ConnectionModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
    
             @Override
     public void run() {
@@ -45,6 +50,7 @@ public class ConnectionModel extends Thread{
             try {
                 String stringDataInputStream= dataInputStream.readUTF();
                 //send message to cliente
+                //here can we implement  a queue
                 ConnectionsManager.getInstance().sendMessageToAll(stringDataInputStream);
 
                 } catch (IOException ex) {
@@ -53,8 +59,9 @@ public class ConnectionModel extends Thread{
 
         }
     }
-    public void sendMessage(String message){
+    public synchronized void sendMessage(String message){
         try {
+            
             dataOutputStream.writeUTF(message);
         } catch (IOException ex) {
             Logger.getLogger(ConnectionModel.class.getName()).log(Level.SEVERE, null, ex);
