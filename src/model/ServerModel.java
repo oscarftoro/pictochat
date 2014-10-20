@@ -18,8 +18,7 @@ import javafx.concurrent.Task;
 /**
  *
  * @author oscar felipe toro DATW12 <oscar@groovenino.com>
- * what if we made this class a process rather than a task?
- * it is carrying several connections somehow or other =/
+ *
  */
 public class ServerModel  {
     Socket socket;
