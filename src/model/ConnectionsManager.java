@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  *This class handle the connections
- * saving the connections in an ArrayList
+ * saving these in an ArrayList
  * @author oscar felipe toro DATW12 <oscar@groovenino.com>
  */
 //Service which have to use a Thread Pool executor
